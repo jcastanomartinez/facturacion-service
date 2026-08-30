@@ -1,0 +1,25 @@
+### Spring Boot / Maven / Java ###
+target/
+*.class
+*.jar
+!.mvn/wrapper/maven-wrapper.jar
+HELP.md
+
+### IDEs ###
+.idea/
+*.iws
+*.ipr
+.vscode/
+*.code-workspace
+
+### Sistema operativo ###
+Thumbs.db
+desktop.ini
+*~
+.directory
+.DS_Store
+
+### Configuración sensible ###
+application-local.properties
+application-secrets.yml
+*.env
