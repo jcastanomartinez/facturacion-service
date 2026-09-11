@@ -21,31 +21,55 @@ public class FacturaController {
         this.facturaService = facturaService;
     }
 
-
     @GetMapping
     public List<Factura> getAllFacturas() {
         return this.facturaService.getAllFacturas();
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Factura> getFacturaById(@PathVariable Long id) {
+    public ResponseEntity<?> getFacturaById(@PathVariable Long id) {
         try {
             return ResponseEntity.ok(facturaService.getFacturaById(id));
         } catch (IllegalArgumentException e) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body((Factura) Map.of("error", e.getMessage()));
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(Map.of("error", e.getMessage()));
         }
     }
-    @PostMapping
-    public Factura createFactura(CrearFacturaRequest nuevaFactura){
-        return facturaService.crearFactura(nuevaFactura);
 
+    @PostMapping
+    public ResponseEntity<?> createFactura(@RequestBody CrearFacturaRequest nuevaFactura) {
+        try {
+            Factura creada = facturaService.crearFactura(nuevaFactura);
+            return ResponseEntity.status(HttpStatus.CREATED).body(creada);
+        } catch (IllegalArgumentException e) {
+            // ej. datos inválidos en el request -> error del cliente, no del servidor
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(Map.of("error", e.getMessage()));
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(Map.of("error", e.getMessage()));
+        }
     }
-    @DeleteMapping
-    public void deleteFactura(Long id) {
-        facturaService.eliminarFactura(id);
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<?> deleteFactura(@PathVariable Long id) {
+        try {
+            facturaService.getFacturaById(id); // lanza si no existe -> 404
+            facturaService.eliminarFactura(id); // la llamada que realmente borra
+            return ResponseEntity.noContent().build(); // 204: borrado correcto, sin cuerpo
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(Map.of("error", e.getMessage()));
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(Map.of("error", e.getMessage()));
+        }
     }
-    @PatchMapping
-    public Factura updateFactura(Long id,ActualizarFacturaRequest facturaModificada) {
-        return facturaService.actualizarFactura(id,facturaModificada);
+
+    @PatchMapping("/{id}")
+    public ResponseEntity<?> updateFactura(@PathVariable Long id, @RequestBody ActualizarFacturaRequest facturaModificada) {
+        try {
+            Factura actualizada = facturaService.actualizarFactura(id, facturaModificada);
+            return ResponseEntity.ok(actualizada);
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(Map.of("error", e.getMessage()));
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(Map.of("error", e.getMessage()));
+        }
     }
 }
