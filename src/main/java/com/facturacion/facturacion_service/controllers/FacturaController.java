@@ -61,7 +61,7 @@ public class FacturaController {
         }
     }
 
-    @PatchMapping("/{id}")
+    @PutMapping("/{id}")
     public ResponseEntity<?> updateFactura(@PathVariable Long id, @RequestBody ActualizarFacturaRequest facturaModificada) {
         try {
             Factura actualizada = facturaService.actualizarFactura(id, facturaModificada);
