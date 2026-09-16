@@ -2,12 +2,45 @@ package com.facturacion.facturacion_service.dtos;
 
 import lombok.Data;
 
-@Data
-    public class ActualizarFacturaRequest {
-        private String cliente;      // todos opcionales — el cliente manda solo lo que quiere cambiar
-        private java.sql.Date fecha_factura;
-        private Long importe;
-        private String estado;
-        // ¿incluirías num_factura aquí? piensa si tiene sentido "editar" el número de factura una vez creada
-    }
+import java.math.BigDecimal;
+import java.time.LocalDate;
+import java.util.List;
 
+@Data
+public class ActualizarFacturaRequest {
+
+    private LocalDate invoiceDate;
+
+    // =========================
+    // EMPRESA
+    // =========================
+
+    private String companyName;
+    private String companyTaxId;
+    private String companyAddress;
+    private String companyEmail;
+
+    // =========================
+    // CLIENTE
+    // =========================
+
+    private String customerName;
+    private String customerTaxId;
+    private String customerAddress;
+
+    // =========================
+    // TOTALES
+    // =========================
+
+    private BigDecimal subtotal;
+    private BigDecimal taxTotal;
+    private BigDecimal total;
+
+    private String estado;
+
+    // =========================
+    // LÍNEAS
+    // =========================
+
+    private List<FacturaItemRequest> items;
+}

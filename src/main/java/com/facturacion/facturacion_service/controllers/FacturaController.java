@@ -2,11 +2,14 @@ package com.facturacion.facturacion_service.controllers;
 
 import com.facturacion.facturacion_service.dtos.ActualizarFacturaRequest;
 import com.facturacion.facturacion_service.dtos.CrearFacturaRequest;
-import com.facturacion.facturacion_service.modelo.Factura;
+import com.facturacion.facturacion_service.entity.Factura;
 import com.facturacion.facturacion_service.services.FacturaService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.http.ContentDisposition;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
 
 import java.util.List;
 import java.util.Map;
@@ -32,6 +35,40 @@ public class FacturaController {
             return ResponseEntity.ok(facturaService.getFacturaById(id));
         } catch (IllegalArgumentException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(Map.of("error", e.getMessage()));
+        }
+    }
+    @GetMapping(
+            value = "/{id}/pdf",
+            produces = MediaType.APPLICATION_PDF_VALUE
+    )
+    public ResponseEntity<byte[]> generarPdf(@PathVariable Long id) {
+
+        try {
+
+            byte[] pdf = facturaService.generarPdf(id);
+
+            Factura factura = facturaService.getFacturaById(id);
+
+            String filename =
+                    factura.getInvoiceNumber() + ".pdf";
+
+            return ResponseEntity.ok()
+                    .header(
+                            HttpHeaders.CONTENT_DISPOSITION,
+                            ContentDisposition
+                                    .attachment()
+                                    .filename(filename)
+                                    .build()
+                                    .toString()
+                    )
+                    .contentType(MediaType.APPLICATION_PDF)
+                    .body(pdf);
+
+        } catch (IllegalArgumentException e) {
+
+            return ResponseEntity
+                    .status(HttpStatus.NOT_FOUND)
+                    .build();
         }
     }
 
