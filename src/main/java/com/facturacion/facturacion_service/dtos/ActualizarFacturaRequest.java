@@ -32,8 +32,11 @@ public class ActualizarFacturaRequest {
     // TOTALES
     // =========================
 
+    /** Calculados por servidor; el valor recibido del cliente se ignora. */
     private BigDecimal subtotal;
+    /** Calculado por servidor; el valor recibido del cliente se ignora. */
     private BigDecimal taxTotal;
+    /** Calculado por servidor; el valor recibido del cliente se ignora. */
     private BigDecimal total;
 
     private String estado;

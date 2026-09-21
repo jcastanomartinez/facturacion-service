@@ -3,6 +3,8 @@ package com.facturacion.facturacion_service.entity;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
+import lombok.EqualsAndHashCode;
 
 import java.math.BigDecimal;
 
@@ -33,5 +35,8 @@ public class FacturaItem {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "factura_id", nullable = false)
+    @ToString.Exclude
+    @EqualsAndHashCode.Exclude
+    @com.fasterxml.jackson.annotation.JsonIgnore
     private Factura factura;
 }
