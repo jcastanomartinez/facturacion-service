@@ -1,0 +1,37 @@
+spring:
+  application:
+    name: facturacion-service
+  datasource:
+    url: "jdbc:postgresql://${DB_HOST:localhost}:${DB_PORT:5434}/${DB_NAME:facturas}"
+    username: "${DB_USER:fact_user}"
+    password: "${DB_PASSWORD:T0byt081*}"
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+    defer-datasource-initialization: true
+  sql:
+    init:
+      mode: always
+
+server:
+  port: 8082
+
+jwt:
+  secret: "${JWT_SECRET}"
+
+# URL base del document-service (RestClientConfig la necesita para poder arrancar).
+# En local por defecto apunta a localhost:8083; en k8s se sobreescribe con DOCUMENT_SERVICE_URL.
+document-service:
+  url: "${DOCUMENT_SERVICE_URL:http://localhost:8083}"
+  connect-timeout-ms: "${DOCUMENT_SERVICE_CONNECT_TIMEOUT_MS:2000}"
+  read-timeout-ms: "${DOCUMENT_SERVICE_READ_TIMEOUT_MS:30000}"
+
+# Datos por defecto del emisor para que el PDF nunca salga con la cabecera vacía.
+# En Kubernetes se pueden sobreescribir con COMPANY_*.
+invoice:
+  company:
+    name: "${COMPANY_NAME:Mi Empresa}"
+    tax-id: "${COMPANY_TAX_ID:B00000000}"
+    address: "${COMPANY_ADDRESS:Calle Principal 1, Madrid}"
+    email: "${COMPANY_EMAIL:facturacion@example.com}"
