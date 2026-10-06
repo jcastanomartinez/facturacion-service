@@ -136,8 +136,6 @@ public class FacturaService {
         if (request.getCustomerAddress() != null) factura.setCustomerAddress(request.getCustomerAddress());
         if (request.getEstado() != null) factura.setEstado(request.getEstado());
 
-        // Si vienen líneas, se reemplazan y los totales se recalculan en servidor.
-        // Los subtotal/taxTotal/total enviados por el cliente se ignoran.
         if (request.getItems() != null) {
             replaceItemsAndRecalculate(factura, request.getItems());
         } else {

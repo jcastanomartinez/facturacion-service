@@ -14,9 +14,6 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 import java.util.List;
 
-// Version reducida respecto a auth-service: no hay AuthenticationManager,
-// ni DaoAuthenticationProvider, ni PasswordEncoder, ni UserDetailsService,
-// porque este servicio nunca autentica credenciales, solo valida JWT ya emitidos.
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig {
