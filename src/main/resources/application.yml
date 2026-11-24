@@ -2,7 +2,7 @@ spring:
   application:
     name: facturacion-service
   datasource:
-    url: "jdbc:postgresql://${DB_HOST:localhost}:${DB_PORT:5434}/${DB_NAME:facturas}"
+    url: "jdbc:postgresql://${DB_HOST:localhost}:${DB_PORT:5435}/${DB_NAME:facturas}"
     username: "${DB_USER:fact_user}"
     password: "${DB_PASSWORD:T0byt081*}"
   jpa:
